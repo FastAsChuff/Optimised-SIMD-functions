@@ -78,11 +78,10 @@ static inline __m128i X_mm_popcnt_epi32(__m128i v) {
 }
 #else
 static inline __m128i X_mm_popcnt_epi32(__m128i v) {
-// Improved on https://stackoverflow.com/questions/6431692/tweaking-mits-bitcount-algorithm-to-count-words-in-parallel
-  v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0x55555555)), _mm_and_si128(_mm_srli_epi32(v, 1), _mm_set1_epi32(0x55555555)));
+  v = _mm_sub_epi32(v, _mm_and_si128(_mm_srli_epi32(v, 1), _mm_set1_epi32(0x55555555)));
   v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0x33333333)), _mm_and_si128(_mm_srli_epi32(v, 2), _mm_set1_epi32(0x33333333)));
-  v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0x0f0f0f0f)), _mm_and_si128(_mm_srli_epi32(v, 4), _mm_set1_epi32(0x0f0f0f0f)));
-  v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0x00ff00ff)), _mm_and_si128(_mm_srli_epi32(v, 8), _mm_set1_epi32(0x00ff00ff)));
+  v = _mm_and_si128(_mm_add_epi32(v, _mm_srli_epi32(v, 4)), _mm_set1_epi32(0x0f0f0f0f));
+  v = _mm_and_si128(_mm_add_epi32(v, _mm_srli_epi32(v, 8)), _mm_set1_epi32(0x00ff00ff));
   v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0xffff)), _mm_srli_epi32(v, 16));
   return v;
 }
