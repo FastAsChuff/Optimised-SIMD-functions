@@ -21,6 +21,17 @@ static inline __m128i X_mm_lzcnt_epi32(__m128i v) {
     return v;
 }
 
+#ifdef __BMI__
+static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
+  uint32_t a[4];
+  _mm_storeu_si64(a, v);
+  a[0] = (a[0] ? __builtin_ctz(a[0]) : 32);
+  a[1] = (a[1] ? __builtin_ctz(a[1]) : 32);
+  a[2] = (a[2] ? __builtin_ctz(a[2]) : 32);
+  a[3] = (a[3] ? __builtin_ctz(a[3]) : 32);
+  return _mm_loadu_si64(a);  
+}
+#else
 #ifdef __SSSE3__
 static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
   // Uses the 16 bit function.
@@ -64,17 +75,20 @@ static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
 }
 #endif
 #endif
+#endif
 
 #ifdef __AVX512_BITALG__
   #define X_mm_popcnt_epi32 _mm_popcnt_epi32
 #else
-#ifdef __SSE4_2__
+#ifdef __POPCNT__
 static inline __m128i X_mm_popcnt_epi32(__m128i v) {
-// Adapted from scalar 32 bit https://stackoverflow.com/questions/109023/count-the-number-of-set-bits-in-a-32-bit-integer
-  v = _mm_sub_epi32(v, _mm_and_si128(_mm_srli_epi32(v, 1), _mm_set1_epi32(0x55555555)));
-  v = _mm_add_epi32(_mm_and_si128(v, _mm_set1_epi32(0x33333333)), _mm_and_si128(_mm_srli_epi32(v, 2), _mm_set1_epi32(0x33333333)));
-  v = _mm_and_si128(_mm_add_epi32(v, _mm_srli_epi32(v, 4)), _mm_set1_epi32(0x0f0f0f0f));
-  return _mm_srli_epi32(_mm_mullo_epi32(v, _mm_set1_epi32(0x01010101)), 24);  
+  uint32_t a[4];
+  _mm_storeu_si64(a, v);
+  a[0] = __builtin_popcount(a[0]);
+  a[1] = __builtin_popcount(a[1]);
+  a[2] = __builtin_popcount(a[2]);
+  a[3] = __builtin_popcount(a[3]);
+  return _mm_loadu_si64(a);  
 }
 #else
 static inline __m128i X_mm_popcnt_epi32(__m128i v) {
