@@ -39,7 +39,7 @@ static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
   //          b otherwise
   __m128i temp;
   __m128i res = X_mm_tzcnt_epi16(v);
-  __m128i mask = _mm_slli_epi32(_mm_cmpeq_epi16(v, _mm_set1_epi16(0)), 16);
+  __m128i mask = _mm_slli_epi32(_mm_cmpeq_epi16(v, _mm_setzero_si128()), 16);
   temp = _mm_srli_epi32(_mm_and_si128(mask, res), 16);
   return _mm_add_epi32(temp, _mm_and_si128(res, _mm_set1_epi32(0xffff)));
 }
@@ -47,29 +47,29 @@ static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
 static inline __m128i X_mm_tzcnt_epi32(__m128i v) {
   __m128i temp, temp2;
   __m128i res;
-  __m128i mask = _mm_cmpeq_epi32(v, _mm_set1_epi32(0));
+  __m128i mask = _mm_cmpeq_epi32(v, _mm_setzero_si128());
   res = _mm_and_si128(mask, _mm_set1_epi32(1));
-  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xffff)), _mm_set1_epi32(0));
+  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xffff)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi32(v, 16));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi32(res, _mm_and_si128(mask, _mm_set1_epi32(16)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xff)), _mm_set1_epi32(0));
+  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xff)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi32(v, 8));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi32(res, _mm_and_si128(mask, _mm_set1_epi32(8)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xf)), _mm_set1_epi32(0));
+  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0xf)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi32(v, 4));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi32(res, _mm_and_si128(mask, _mm_set1_epi32(4)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0x3)), _mm_set1_epi32(0));
+  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0x3)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi32(v, 2));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi32(res, _mm_and_si128(mask, _mm_set1_epi32(2)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0x1)), _mm_set1_epi32(0));
+  mask = _mm_cmpeq_epi32(_mm_and_si128(v, _mm_set1_epi32(0x1)), _mm_setzero_si128());
   res = _mm_add_epi32(res, _mm_and_si128(mask, _mm_set1_epi32(1)));
   return res;
 }

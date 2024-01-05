@@ -8,24 +8,24 @@
 static inline __m128i X_mm_lzcnt_epi16(__m128i v) {
   __m128i temp, temp2;
   __m128i res;
-  __m128i mask = _mm_cmpeq_epi16(v, _mm_set1_epi16(0));
+  __m128i mask = _mm_cmpeq_epi16(v, _mm_setzero_si128());
   res = _mm_and_si128(mask, _mm_set1_epi16(1));
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xff00)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xff00)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, v);
   temp2 = _mm_andnot_si128(mask, _mm_srli_epi16(v, 8));
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(8)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfff0)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfff0)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, v);
   temp2 = _mm_andnot_si128(mask, _mm_srli_epi16(v, 4));
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(4)));
   v = _mm_or_si128(temp, temp2);
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfffc)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfffc)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, v);
   temp2 = _mm_andnot_si128(mask, _mm_srli_epi16(v, 2));
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(2)));
   v = _mm_or_si128(temp, temp2);
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfffe)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xfffe)), _mm_setzero_si128());
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(1)));
   return res;
 }
@@ -33,24 +33,24 @@ static inline __m128i X_mm_lzcnt_epi16(__m128i v) {
 static inline __m128i X_mm_tzcnt_epi16(__m128i v) {
   __m128i temp, temp2;
   __m128i res;
-  __m128i mask = _mm_cmpeq_epi16(v, _mm_set1_epi16(0));
+  __m128i mask = _mm_cmpeq_epi16(v, _mm_setzero_si128());
   res = _mm_and_si128(mask, _mm_set1_epi16(1));
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xff)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xff)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi16(v, 8));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(8)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xf)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0xf)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi16(v, 4));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(4)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0x3)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0x3)), _mm_setzero_si128());
   temp = _mm_and_si128(mask, _mm_srli_epi16(v, 2));
   temp2 = _mm_andnot_si128(mask, v);
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(2)));
   v = _mm_or_si128(temp, temp2); 
-  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0x1)), _mm_set1_epi16(0));
+  mask = _mm_cmpeq_epi16(_mm_and_si128(v, _mm_set1_epi16(0x1)), _mm_setzero_si128());
   res = _mm_add_epi16(res, _mm_and_si128(mask, _mm_set1_epi16(1)));
   return res;
 }
